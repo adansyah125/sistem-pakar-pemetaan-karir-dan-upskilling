@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model DiagnosisSession {
+  id             String             @id @default(cuid())
+  userId         String
+  minat          Json
+  hasilDiagnosis Json?
+  dibuatPada     DateTime           @default(now())
+  updatedPada    DateTime           @updatedAt
+  assessment     AssessmentSession?
+  roadmap        Roadmap?
+
+  @@index([userId])
+}
+
+model AssessmentSession {
+  id             String             @id @default(cuid())
+  diagnosisId    String             @unique
+  diagnosis      DiagnosisSession   @relation(fields: [diagnosisId], references: [id], onDelete: Cascade)
+  soal           Json
+  jawaban        Json?
+  hasilAnalisis  Json?
+  dibuatPada     DateTime           @default(now())
+  updatedPada    DateTime           @updatedAt
+
+  @@index([diagnosisId])
+}
+
+model Roadmap {
+  id          String           @id @default(cuid())
+  diagnosisId String           @unique
+  diagnosis   DiagnosisSession @relation(fields: [diagnosisId], references: [id], onDelete: Cascade)
+  data        Json
+  progress    Json             @default("{}")
+  dibuatPada  DateTime         @default(now())
+  updatedPada DateTime         @updatedAt
+
+  @@index([diagnosisId])
+}
