@@ -42,13 +42,13 @@ export default function Beranda() {
           </div>
           <div className="absolute -z-10 opacity-30 w-full h-full">
             <Image
-    className="object-cover"
-    alt="A futuristic digital career landscape visualization"
-    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE0cs3WI6Vlf9_OTGfuOeBElzX-vNzjSdJmGTMj1tt1eQVdsxmv60SD1zWwol2-l5_-L2oos_g6EslWYS1pTYioz7dtANbpCfompFGIw6--DnKue0iLSjx-S9tQR5EsA9CP5I78ugzF_MWnOlt2FWbp-jIfmpTtspN3bEqIofwjJwsTF30qvK_bqeJbyuVY9FlklMRdDImSNxUMXC0lKcIsucGvVuPSm5cX4QWQv6c_zpqZaArqPhCaUhjutsr5DX6gobBMCAIAjQ"
-    fill
-    priority
-    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-  />
+            priority
+            fill
+            className="object-cover"
+            alt="A futuristic digital career landscape visualization"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE0cs3WI6Vlf9_OTGfuOeBElzX-vNzjSdJmGTMj1tt1eQVdsxmv60SD1zWwol2-l5_-L2oos_g6EslWYS1pTYioz7dtANbpCfompFGIw6--DnKue0iLSjx-S9tQR5EsA9CP5I78ugzF_MWnOlt2FWbp-jIfmpTtspN3bEqIofwjJwsTF30qvK_bqeJbyuVY9FlklMRdDImSNxUMXC0lKcIsucGvVuPSm5cX4QWQv6c_zpqZaArqPhCaUhjutsr5DX6gobBMCAIAjQ"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
           </div>
         </section>
         <section className="px-margin-mobile md:px-margin-desktop py-stack-lg">
@@ -116,11 +116,12 @@ export default function Beranda() {
             </div>
             <div className="flex-1 w-full md:w-auto h-64 border-2 border-black shadow-[4px_4px_0px_0px_#000] relative overflow-hidden">
               <Image
-                priority
-                fill
+              priority
+              fill
                 className="w-full h-full object-cover"
                 alt="Professional digital nomads working in a high-tech space"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5voYFkqxlRoyGsFsQ_w1P-LC4wf_VpQcvGy0s0P_a9XJXMUGtTEEadXsTBJqMj_JXe6GU1nD2xxTR-wJXEa1e5GJTWBpp8H002PHDhZTO2Z2jdV2WrNLTMOT-VFTJ8PwSBYd7AcC-7kIGPYHZDPzNoB9CD2ZRSD8ZFu4ITBodHfEc58D4A3kfr6XR6Log_TBZYU5K4Eo_UUggWnJUWuiUJDQYWyC8WQ2hRi3taPTefR5ht4Qv6Fa_O3-2extyP_N9CI1WCC1RM80"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           </div>
