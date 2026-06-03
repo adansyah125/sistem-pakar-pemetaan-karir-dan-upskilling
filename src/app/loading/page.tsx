@@ -4,6 +4,10 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCareerStore } from "@/store/useCareerStore";
 import { supabase } from "@/lib/supabase";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Brain, AlertCircle, ArrowLeft } from "lucide-react";
 
 const STATUS_MAP: Record<string, string[]> = {
   questions: [
@@ -40,7 +44,7 @@ export default function LoadingWrapper() {
 function LoadingFallback() {
   return (
     <div className="overflow-hidden h-screen w-screen flex items-center justify-center">
-      <div className="w-12 h-12 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
+      <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }
@@ -54,8 +58,6 @@ function LoadingPage() {
 
   const statuses =
     STATUS_MAP[step] || STATUS_MAP.questions;
-
-  const namaUser = "Pengguna";
 
   useEffect(() => {
     const statusInterval = setInterval(() => {
@@ -154,21 +156,21 @@ function LoadingPage() {
   if (error) {
     return (
       <div className="overflow-hidden h-screen w-screen flex flex-col items-center justify-center p-margin-mobile">
-        <div className="glass-card border-2 border-error p-8 max-w-md text-center">
-          <span className="material-symbols-outlined text-error text-5xl mb-4">
-            error
-          </span>
-          <h2 className="font-headline-lg text-headline-lg-mobile text-error mb-4">
+        <Card className="glass-card border-2 border-destructive p-8 max-w-md text-center rounded-none">
+          <AlertCircle className="text-destructive h-12 w-12 mx-auto mb-4" />
+          <h2 className="font-headline-lg text-headline-lg-mobile text-destructive mb-4">
             Terjadi Kesalahan
           </h2>
-          <p className="text-body-md text-on-surface-variant mb-6">{error}</p>
-          <button
+          <p className="text-body-md text-muted-foreground mb-6">{error}</p>
+          <Button
             onClick={() => router.push("/diagnosis-karir")}
-            className="px-8 py-3 bg-primary-container text-on-primary-fixed font-label-bold border-2 border-black shadow-[4px_4px_0px_0px_#000000]"
+            variant="accent"
+            size="lg"
           >
+            <ArrowLeft className="h-4 w-4 mr-2" />
             Kembali ke Diagnosis
-          </button>
-        </div>
+          </Button>
+        </Card>
       </div>
     );
   }
@@ -196,50 +198,41 @@ function LoadingPage() {
         </div>
         <div className="z-10 flex flex-col items-center gap-stack-lg">
           <div className="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center">
-            <div className="absolute inset-0 border-[6px] border-black rounded-full brutal-shadow bg-surface-container/40 backdrop-blur-md" />
-            <div className="absolute inset-2 border-t-[6px] border-r-[6px] border-primary-container rounded-full animate-orbit" />
-            <div className="bg-primary-container p-6 border-2 border-black brutal-shadow rounded-full flex items-center justify-center">
-              <span
-                className="material-symbols-outlined text-on-primary-container text-4xl md:text-6xl"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                psychology
-              </span>
+            <div className="absolute inset-0 border-[6px] border-black rounded-full brutal-shadow bg-card/40 backdrop-blur-md" />
+            <div className="absolute inset-2 border-t-[6px] border-r-[6px] border-primary rounded-full animate-orbit" />
+            <div className="bg-primary p-6 border-2 border-black brutal-shadow rounded-full flex items-center justify-center">
+              <Brain className="text-primary-foreground h-12 w-12 md:h-16 md:w-16" />
             </div>
           </div>
           <div className="text-center space-y-stack-sm max-w-lg">
-            <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary-container animate-blink tracking-tight min-h-[3rem] transition-opacity duration-300">
+            <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary animate-blink tracking-tight min-h-[3rem] transition-opacity duration-300">
               {statuses[statusIndex]}
             </h1>
-            <p className="font-body-md text-on-surface-variant opacity-80 px-4">
+            <p className="font-body-md text-muted-foreground opacity-80 px-4">
               {step === "roadmap"
                 ? "Menyusun roadmap karir khusus untuk Anda."
                 : "Mempersiapkan assessment yang dipersonalisasi."}
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-base">
-            <div className="px-4 py-2 bg-surface-container-highest border-2 border-black rounded-full flex items-center gap-2">
+            <Badge variant="outline" className="px-4 py-2 border-2 border-black rounded-full flex items-center gap-2 text-sm">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="font-label-mono text-label-mono uppercase tracking-widest text-primary">
-                Engine: Gemini 2.5 Flash
-              </span>
-            </div>
-            <div className="px-4 py-2 bg-surface-container-highest border-2 border-black rounded-full flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse" />
-              <span className="font-label-mono text-label-mono uppercase tracking-widest text-tertiary-fixed">
-                {step === "questions"
-                  ? "Generate Soal"
-                  : step === "assess"
-                  ? "Evaluasi Jawaban"
-                  : "Buat Roadmap"}
-              </span>
-            </div>
+              Engine: Gemini 2.5 Flash
+            </Badge>
+            <Badge variant="outline" className="px-4 py-2 border-2 border-black rounded-full flex items-center gap-2 text-sm">
+              <span className="w-2 h-2 rounded-full bg-[hsl(90,100%,47%)] animate-pulse" />
+              {step === "questions"
+                ? "Generate Soal"
+                : step === "assess"
+                ? "Evaluasi Jawaban"
+                : "Buat Roadmap"}
+            </Badge>
           </div>
         </div>
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-10">
           <div className="absolute top-1/2 left-0 w-full h-[2px] bg-primary" />
           <div className="absolute top-0 left-1/4 w-[2px] h-full bg-primary" />
-          <div className="absolute bottom-1/4 right-1/4 w-[100px] h-[100px] border-4 border-primary-container rotate-45" />
+          <div className="absolute bottom-1/4 right-1/4 w-[100px] h-[100px] border-4 border-primary rotate-45" />
         </div>
       </main>
     </div>

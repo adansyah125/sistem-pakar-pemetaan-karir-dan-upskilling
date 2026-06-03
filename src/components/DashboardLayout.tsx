@@ -4,12 +4,16 @@ import MainNavbar from "./navbar";
 import MobileNavbar from "./MobileNavbar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LayoutDashboard, GitBranch, FileQuestion, Route, User } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 
 const sidebarItems = [
-  { icon: "dashboard", label: "Dashboard", href: "/dashboard" },
-  { icon: "account_tree", label: "Skill Map", href: "/skill-map" },
-  { icon: "quiz", label: "Test Center", href: "/test-center" },
-  { icon: "alt_route", label: "Roadmaps", href: "/peta-jalan" },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+  { icon: GitBranch, label: "Skill Map", href: "/skill-map" },
+  { icon: FileQuestion, label: "Test Center", href: "/test-center" },
+  { icon: Route, label: "Roadmaps", href: "/peta-jalan" },
 ];
 
 export default function DashboardLayout({
@@ -25,18 +29,18 @@ export default function DashboardLayout({
     <>
       <MainNavbar />
       <div className="flex pt-20">
-        <aside className="hidden md:flex flex-col py-6 gap-stack-sm h-screen w-64 border-r-2 border-black bg-surface-container shadow-[4px_0px_0px_0px_#000000] sticky top-20">
+        <aside className="hidden md:flex flex-col py-6 gap-stack-sm h-screen w-64 border-r border-border bg-card sticky top-20">
           <div className="px-6 mb-stack-md">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full border-2 border-black bg-primary-container flex items-center justify-center">
-                <span className="material-symbols-outlined text-on-primary-container">
-                  person
-                </span>
-              </div>
+              <Avatar className="h-10 w-10 border-2 border-border">
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  <User className="h-5 w-5" />
+                </AvatarFallback>
+              </Avatar>
               <div>
-                <div className="font-label-bold text-on-surface">Peserta</div>
+                <div className="font-label-bold text-foreground">Peserta</div>
                 {tujuanKarir && (
-                  <div className="text-xs text-on-surface-variant">
+                  <div className="text-xs text-muted-foreground">
                     {tujuanKarir}
                   </div>
                 )}
@@ -46,22 +50,27 @@ export default function DashboardLayout({
           <nav className="flex-grow">
             {sidebarItems.map((item) => {
               const isActive = pathname === item.href;
+              const Icon = item.icon;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 mx-2 rounded-lg transition-transform hover:translate-x-1 ${
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 mx-2 rounded-lg transition-all",
                     isActive
-                      ? "bg-secondary-container text-on-secondary-container border-2 border-black shadow-[2px_2px_0px_0px_#000000]"
-                      : "text-on-surface-variant hover:bg-surface-container-highest"
-                  }`}
+                      ? "bg-secondary text-secondary-foreground border-2 border-black shadow-[2px_2px_0px_0px_#000]"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  )}
                 >
-                  <span className="material-symbols-outlined">{item.icon}</span>
+                  <Icon className="h-5 w-5" />
                   <span className="font-label-bold">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
+          <div className="px-4 mt-auto">
+            <Separator className="my-4" />
+          </div>
         </aside>
         <main className="flex-grow px-margin-mobile md:px-margin-desktop py-stack-lg relative overflow-x-hidden animate-fade-in">
           {children}

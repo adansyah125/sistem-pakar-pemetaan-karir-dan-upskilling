@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'CareerPath AI - Sistem Pakar Pemetaan Karir & Upskilling',
+  title: 'Karirku - Sistem Pakar Pemetaan Karir & Upskilling',
   description: 'Temukan karir digital yang cocok untuk Anda lewat analisis sistem pakar dan uji kompetensi dinamis berbasis AI untuk mengatasi skill gap.',
   keywords: ['sistem pakar karir', 'pemetaan karir', 'upskilling gratis', 'tes kerja AI', 'skill gap analysis'],
 };
+
 
 export default function RootLayout({
   children,
@@ -24,7 +25,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container bg-background text-on-background">
+      <body className="antialiased selection:bg-primary selection:text-primary-foreground bg-background text-foreground">
         {children}
       </body>
     </html>

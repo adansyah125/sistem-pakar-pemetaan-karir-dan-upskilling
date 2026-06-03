@@ -4,14 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MainNavbar from "@/components/navbar";
 import { useCareerStore } from "@/store/useCareerStore";
-import type { SoalKompetensi } from "@/types/career";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 
-const LABEL_OPTIONS: Record<string, string> = {
-  A: "Pilihan A",
-  B: "Pilihan B",
-  C: "Pilihan C",
-  D: "Pilihan D",
-};
 
 export default function Pertanyaan() {
   const router = useRouter();
@@ -48,7 +45,7 @@ export default function Pertanyaan() {
   }
 
   const getPilihanLabel = (pilihan: Record<string, string>, key: string) => {
-    return pilihan[key] || LABEL_OPTIONS[key] || `Opsi ${key}`;
+    return pilihan[key] || `Opsi ${key}`;
   };
 
   return (
@@ -96,179 +93,130 @@ export default function Pertanyaan() {
         />
       </div>
       <div className="flex pt-20 min-h-screen">
-        <aside className="hidden md:flex flex-col py-6 gap-stack-sm h-screen w-64 border-r-2 border-black bg-surface-container shadow-[4px_0px_0px_0px_#000000] sticky top-20">
+        <aside className="hidden md:flex flex-col py-6 gap-stack-sm h-screen w-64 border-r border-border bg-card sticky top-20">
           <div className="px-6 mb-6">
-            <div className="flex items-center gap-3 p-2 bg-surface-container-highest border-2 border-black rounded-lg">
-              <div className="w-10 h-10 rounded-full border-2 border-black bg-primary-container flex items-center justify-center">
-                <span className="material-symbols-outlined text-on-primary-container text-lg">
+            <div className="flex items-center gap-3 p-2 bg-accent border-2 border-black rounded-lg">
+              <div className="w-10 h-10 rounded-full border-2 border-black bg-primary flex items-center justify-center">
+                <span className="material-symbols-outlined text-primary-foreground">
                   person
                 </span>
               </div>
-              <div className="overflow-hidden">
-                <p className="font-label-bold text-label-bold text-on-surface truncate">
-                  Peserta Assessment
-                </p>
-                <p className="text-[10px] text-on-surface-variant">
-                  {soalAktif[0]?.kategori || "Kompetensi"}
-                </p>
+              <div>
+                <div className="font-label-bold text-foreground">Peserta</div>
+                <div className="text-xs text-muted-foreground">
+                  Assessment
+                </div>
               </div>
             </div>
           </div>
-          <nav className="flex flex-col gap-2">
-            <div className="text-on-surface-variant hover:bg-surface-container-highest px-4 py-3 mx-2 rounded-lg transition-all flex items-center gap-3">
-              <span className="material-symbols-outlined">dashboard</span>
-              <span className="font-label-bold">Dashboard</span>
+          <div className="px-6 flex flex-col gap-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground font-label-bold uppercase text-xs tracking-wider">Progress</span>
+              <span className="font-bold text-primary">{answeredCount}/{soalAktif.length}</span>
             </div>
-            <div className="bg-secondary-container text-on-secondary-container border-2 border-black shadow-[2px_2px_0px_0px_#000000] ml-2 mr-2 px-4 py-3 rounded-lg flex items-center gap-3">
-              <span
-                className="material-symbols-outlined"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                quiz
-              </span>
-              <span className="font-label-bold">Test Center</span>
-            </div>
-          </nav>
-          <div className="mt-auto px-6">
-            <div className="bg-surface-container-highest border-2 border-black p-3">
-              <div className="text-xs font-label-bold text-on-surface-variant uppercase tracking-wider mb-2">
-                Progress
-              </div>
-              <div className="w-full h-2 bg-surface-container border-2 border-black">
+            <Progress value={progress} className="h-3 border border-border rounded-none [&>*]:bg-primary" />
+            <div className="flex flex-wrap gap-2 mt-4">
+              {soalAktif.map((s) => (
                 <div
-                  className="h-full bg-primary-container transition-all duration-500"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-              <div className="text-xs text-on-surface-variant mt-1 text-right">
-                {answeredCount}/{soalAktif.length}
-              </div>
+                  key={s.nomor}
+                  className={`w-8 h-8 flex items-center justify-center text-xs font-bold border-2 rounded-none cursor-pointer transition-colors ${
+                    jawaban[s.nomor]
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card text-muted-foreground border-border hover:border-primary"
+                  }`}
+                  onClick={() => {
+                    document.getElementById(`soal-${s.nomor}`)?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  {s.nomor}
+                </div>
+              ))}
             </div>
           </div>
         </aside>
-        <main className="flex-1 px-margin-mobile md:px-margin-desktop py-stack-lg max-w-5xl mx-auto">
-          <header className="mb-stack-lg">
-            <div className="flex items-center gap-2 text-primary-fixed-dim mb-2">
-              <span className="material-symbols-outlined">bolt</span>
-              <span className="font-label-bold uppercase tracking-widest">
-                AI Assessment In-Progress
-              </span>
+        <main className="flex-grow px-margin-mobile md:px-margin-desktop py-stack-lg max-w-4xl animate-fade-in">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-stack-lg">
+              <h1 className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-foreground mb-2">
+                Soal Kompetensi
+              </h1>
+              <p className="text-muted-foreground">
+                Jawablah 10 soal berikut dengan sebaik mungkin.
+              </p>
+              <div className="md:hidden mt-4">
+                <Progress value={progress} className="h-3 border border-border rounded-none [&>*]:bg-primary" />
+                <p className="text-sm text-muted-foreground mt-1 text-right">{answeredCount}/{soalAktif.length} terjawab</p>
+              </div>
             </div>
-            <h1 className="font-headline-xl text-headline-xl text-primary mb-4">
-              Evaluasi Kompetensi
-            </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-              Jawab 10 soal kompetensi yang telah dirumuskan khusus oleh AI
-              berdasarkan minat Anda.
-            </p>
-          </header>
-          <form
-            className="flex flex-col gap-gutter"
-            onSubmit={handleSubmit}
-          >
-            {soalAktif.map((soal, index) => {
-              const colorClasses = [
-                "bg-primary-container",
-                "bg-secondary-container",
-                "bg-tertiary-container",
-                "bg-primary-container",
-                "bg-secondary-container",
-                "bg-tertiary-container",
-                "bg-primary-container",
-                "bg-secondary-container",
-                "bg-tertiary-container",
-                "bg-primary-container",
-              ];
-              return (
-                <div
-                  key={soal.nomor}
-                  className="glass-card p-stack-md border-2 border-black shadow-[4px_4px_0px_0px_#000000] relative group transition-transform hover:-translate-y-1"
-                >
-                  <div
-                    className={`absolute -top-4 -left-4 w-12 h-12 ${colorClasses[index]} text-on-primary-container border-2 border-black shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center font-headline-lg-mobile italic`}
-                  >
-                    {soal.nomor}
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-headline-lg-mobile text-headline-lg-mobile mb-gutter">
+
+            <div className="flex flex-col gap-stack-lg">
+              {soalAktif.map((soal) => (
+                <div key={soal.nomor} id={`soal-${soal.nomor}`}>
+                  <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 rounded-none">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Badge variant="accent" className="text-sm px-3 py-1 rounded-none">
+                        Soal {soal.nomor}
+                      </Badge>
+                      {soal.kategori && (
+                        <Badge variant="outline" className="text-xs rounded-none border-border">
+                          {soal.kategori}
+                        </Badge>
+                      )}
+                    </div>
+                    <h3 className="font-headline-lg-mobile text-foreground mb-4">
                       {soal.pertanyaan}
-                    </p>
-                    <div className="grid gap-3">
-                      {Object.entries(soal.pilihan).map(([key, value]) => (
-                        <label
-                          key={key}
-                          className={`flex items-center gap-4 p-4 border-2 border-black cursor-pointer transition-colors ${
-                            jawaban[soal.nomor] === key
-                              ? "bg-primary-container/20 option-selected"
-                              : "bg-surface-container-low hover:bg-surface-container-highest"
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name={`q${soal.nomor}`}
-                            value={key}
-                            checked={jawaban[soal.nomor] === key}
-                            onChange={() => handleSelect(soal.nomor, key)}
-                            className="hidden custom-radio"
-                          />
-                          <span
-                            className={`radio-marker w-6 h-6 border-2 border-black rounded-full transition-all flex items-center justify-center ${
-                              jawaban[soal.nomor] === key
-                                ? "bg-primary-container border-primary-container"
-                                : ""
+                    </h3>
+                    <div className="flex flex-col gap-3">
+                      {Object.entries(soal.pilihan).map(([key, value]) => {
+                        const isSelected = jawaban[soal.nomor] === key;
+                        return (
+                          <label
+                            key={key}
+                            className={`flex items-center gap-4 p-4 border-2 cursor-pointer transition-all duration-100 ${
+                              isSelected
+                                ? "border-primary bg-primary/10 shadow-[4px_4px_0px_0px_#000] -translate-y-0.5 translate-x-0.5"
+                                : "border-border bg-card hover:bg-accent hover:-translate-y-0.5 hover:translate-x-0.5 shadow-[4px_4px_0px_0px_#000]"
                             }`}
                           >
-                            {jawaban[soal.nomor] === key && (
-                              <span className="text-black text-xs font-bold">
-                                ✓
-                              </span>
-                            )}
-                          </span>
-                          <span className="font-body-md text-body-md">
-                            <span className="font-label-bold mr-2">{key}.</span>
-                            {value}
-                          </span>
-                        </label>
-                      ))}
+                            <input
+                              type="radio"
+                              name={`soal-${soal.nomor}`}
+                              value={key}
+                              checked={isSelected}
+                              onChange={() => handleSelect(soal.nomor, key)}
+                              className="sr-only"
+                            />
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                              isSelected ? "border-primary bg-primary" : "border-muted-foreground"
+                            }`}>
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-primary-foreground" />}
+                            </div>
+                            <span className={`font-body-md ${isSelected ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                              {getPilihanLabel(soal.pilihan, key)}
+                            </span>
+                          </label>
+                        );
+                      })}
                     </div>
-                  </div>
+                  </Card>
                 </div>
-              );
-            })}
-            <div className="mt-stack-lg border-t-4 border-black pt-stack-lg flex flex-col items-center gap-gutter">
-              <button
+              ))}
+            </div>
+
+            <div className="mt-stack-lg flex justify-center">
+              <Button
                 type="submit"
+                variant="accent"
+                size="xl"
                 disabled={submitting}
-                className="w-full md:w-auto px-16 py-6 bg-primary-container text-on-primary-container font-headline-lg border-4 border-black shadow-[8px_8px_0px_0px_#000000] hover:-translate-y-1 hover:translate-x-1 hover:shadow-[12px_12px_0px_0px_#000000] transition-all active:translate-y-2 active:translate-x-2 active:shadow-[4px_4px_0px_0px_#000000] uppercase tracking-tighter disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-lg"
               >
-                {submitting ? "Mengirim..." : "Kirim Jawaban"}
-              </button>
+                {submitting ? "Mengirim..." : `Kirim Jawaban (${answeredCount}/${soalAktif.length})`}
+              </Button>
             </div>
           </form>
         </main>
       </div>
-      <footer className="w-full border-t-2 border-black mt-stack-lg bg-surface-container-lowest flex flex-col md:flex-row justify-between items-center py-stack-md px-margin-mobile md:px-margin-desktop gap-gutter">
-        <div className="flex items-center gap-2">
-          <span className="font-headline-lg-mobile text-primary">Auralis</span>
-          <span className="text-on-surface-variant text-sm">
-            &copy; 2024 AI Edition.
-          </span>
-        </div>
-        <div className="flex gap-6">
-          <a
-            className="font-body-md text-on-surface-variant hover:text-primary transition-colors"
-            href="#"
-          >
-            Privacy Policy
-          </a>
-          <a
-            className="font-body-md text-on-surface-variant hover:text-primary transition-colors"
-            href="#"
-          >
-            Terms of Service
-          </a>
-        </div>
-      </footer>
     </>
   );
 }

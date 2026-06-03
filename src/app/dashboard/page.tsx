@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/DashboardLayout";
 import { supabase } from "@/lib/supabase";
 import type { RiwayatItem } from "@/types/career";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { BadgeCheck, BarChart3, History, Route, ClipboardList, Loader2 } from "lucide-react";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -40,70 +44,68 @@ export default function Dashboard() {
     <DashboardLayout tujuanKarir={latest?.hasilDiagnosis?.karirUtama ?? null}>
       <div className="max-w-5xl mx-auto space-y-8">
         <div>
-          <h1 className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-primary mb-2">
+          <h1 className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-foreground mb-2">
             Dashboard
           </h1>
-          <p className="text-on-surface-variant">
+          <p className="text-muted-foreground">
             Selamat datang, <span className="font-bold">{user?.email?.split("@")[0] || "Peserta"}</span>
           </p>
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="animate-spin w-10 h-10 border-4 border-primary-container border-t-transparent rounded-full" />
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
           </div>
         ) : !latest ? (
-          <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-12 text-center">
-            <span className="material-symbols-outlined text-6xl text-on-surface-variant mb-4">dashboard</span>
+          <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-12 text-center rounded-none">
+            <ClipboardList className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h2 className="font-headline-lg mb-4">Belum Ada Data</h2>
-            <p className="text-on-surface-variant mb-6">Lakukan diagnosis karir terlebih dahulu untuk melihat dashboard.</p>
-            <button
+            <p className="text-muted-foreground mb-6">Lakukan diagnosis karir terlebih dahulu untuk melihat dashboard.</p>
+            <Button
               onClick={() => router.push("/diagnosis-karir")}
-              className="px-8 py-3 bg-primary-container text-on-primary-fixed font-label-bold border-2 border-black shadow-[4px_4px_0px_0px_#000000]"
+              variant="accent"
+              size="lg"
             >
               Mulai Diagnosis
-            </button>
-          </div>
+            </Button>
+          </Card>
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6">
-                <span className="material-symbols-outlined text-3xl text-primary-container mb-3">badge</span>
-                <p className="text-3xl font-bold text-primary-container">{latest.hasilDiagnosis?.karirUtama || "-"}</p>
-                <p className="text-sm text-on-surface-variant mt-1">Karir Utama</p>
-              </div>
-              <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6">
-                <span className="material-symbols-outlined text-3xl text-secondary mb-3">analytics</span>
+              <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 rounded-none">
+                <BadgeCheck className="h-8 w-8 text-primary mb-3" />
+                <p className="text-3xl font-bold text-primary">{latest.hasilDiagnosis?.karirUtama || "-"}</p>
+                <p className="text-sm text-muted-foreground mt-1">Karir Utama</p>
+              </Card>
+              <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 rounded-none">
+                <BarChart3 className="h-8 w-8 text-secondary mb-3" />
                 <p className="text-3xl font-bold text-secondary">{latest.hasilDiagnosis?.skorKepercayaan || 0}%</p>
-                <p className="text-sm text-on-surface-variant mt-1">Skor Kecocokan</p>
-              </div>
-              <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6">
-                <span className="material-symbols-outlined text-3xl text-tertiary mb-3">history</span>
-                <p className="text-3xl font-bold text-tertiary">{totalAssessment}</p>
-                <p className="text-sm text-on-surface-variant mt-1">Total Assessment</p>
-              </div>
+                <p className="text-sm text-muted-foreground mt-1">Skor Kecocokan</p>
+              </Card>
+              <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 rounded-none">
+                <History className="h-8 w-8 text-[hsl(90,100%,47%)] mb-3" />
+                <p className="text-3xl font-bold text-[hsl(90,100%,47%)]">{totalAssessment}</p>
+                <p className="text-sm text-muted-foreground mt-1">Total Assessment</p>
+              </Card>
             </div>
 
             {latest.roadmap && (
-              <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6">
+              <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 rounded-none">
                 <h2 className="font-headline-lg text-headline-lg-mobile mb-4">Progress Roadmap</h2>
                 <div className="flex items-end gap-3 mb-3">
-                  <span className="text-4xl font-bold text-primary-container">{latest.progressRoadmap}%</span>
-                  <span className="text-on-surface-variant mb-1">Selesai</span>
+                  <span className="text-4xl font-bold text-primary">{latest.progressRoadmap}%</span>
+                  <span className="text-muted-foreground mb-1">Selesai</span>
                 </div>
-                <div className="w-full h-5 bg-surface-container border-2 border-black relative overflow-hidden">
-                  <div
-                    className="absolute inset-0 bg-primary-container transition-all duration-1000"
-                    style={{ width: `${latest.progressRoadmap}%` }}
-                  />
-                </div>
-                <button
+                <Progress value={latest.progressRoadmap} className="h-5 border-2 border-border rounded-none [&>*]:bg-primary [&>*]:transition-all [&>*]:duration-1000" />
+                <Button
                   onClick={() => router.push("/peta-jalan")}
-                  className="mt-6 px-6 py-2 bg-secondary-container text-on-secondary-container font-label-bold border-2 border-black shadow-[2px_2px_0px_0px_#000000]"
+                  variant="secondary"
+                  className="mt-6 border-2 border-black shadow-[2px_2px_0px_0px_#000] rounded-none"
                 >
+                  <Route className="h-4 w-4 mr-2" />
                   Lihat Roadmap
-                </button>
-              </div>
+                </Button>
+              </Card>
             )}
           </>
         )}
