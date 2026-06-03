@@ -1,15 +1,34 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
 @theme {
+  --color-background: hsl(285, 5%, 8%);
+  --color-foreground: hsl(300, 5%, 89%);
+  --color-card: hsl(285, 3%, 11%);
+  --color-card-foreground: hsl(300, 5%, 89%);
+  --color-popover: hsl(285, 3%, 11%);
+  --color-popover-foreground: hsl(300, 5%, 89%);
+  --color-primary: hsl(182, 100%, 47%);
+  --color-primary-foreground: hsl(182, 100%, 11%);
+  --color-secondary: hsl(290, 100%, 85%);
+  --color-secondary-foreground: hsl(290, 100%, 22%);
+  --color-muted: hsl(285, 2%, 16%);
+  --color-muted-foreground: hsl(185, 11%, 76%);
+  --color-accent: hsl(182, 100%, 47%);
+  --color-accent-foreground: hsl(182, 100%, 11%);
+  --color-destructive: hsl(8, 100%, 84%);
+  --color-destructive-foreground: hsl(356, 100%, 20%);
+  --color-border: hsl(0, 0%, 0%);
+  --color-input: hsl(300, 2%, 21%);
+  --color-ring: hsl(182, 100%, 47%);
   --color-error: #ffb4ab;
   --color-secondary-fixed: #f8d8ff;
   --color-on-secondary-container: #fff6fc;
   --color-secondary-fixed-dim: #ebb2ff;
   --color-tertiary-fixed: #a9f900;
   --color-inverse-on-surface: #313032;
-  --color-background: #131315;
-  --color-on-secondary-fixed: #320047;
   --color-on-background: #e5e1e4;
+  --color-on-secondary-fixed: #320047;
   --color-on-primary-container: #006970;
   --color-surface-container-high: #2a2a2c;
   --color-on-primary-fixed: #002022;
@@ -19,7 +38,6 @@
   --color-surface-container-low: #1c1b1d;
   --color-outline: #849495;
   --color-surface-container: #201f21;
-  --color-secondary: #ebb2ff;
   --color-on-secondary: #520072;
   --color-surface-container-highest: #353437;
   --color-primary-fixed-dim: #00dbe9;
@@ -31,7 +49,6 @@
   --color-surface-bright: #39393b;
   --color-outline-variant: #3b494b;
   --color-on-primary: #00363a;
-  --color-primary: #dbfcff;
   --color-on-primary-fixed-variant: #004f54;
   --color-on-error-container: #ffdad6;
   --color-surface-tint: #00dbe9;
@@ -48,6 +65,14 @@
   --color-tertiary: #e5ffba;
   --color-inverse-primary: #006970;
   --color-on-secondary-fixed-variant: #74009f;
+  --color-sidebar-background: hsl(285, 3%, 11%);
+  --color-sidebar-foreground: hsl(300, 5%, 89%);
+  --color-sidebar-primary: hsl(182, 100%, 47%);
+  --color-sidebar-primary-foreground: hsl(182, 100%, 11%);
+  --color-sidebar-accent: hsl(285, 2%, 16%);
+  --color-sidebar-accent-foreground: hsl(300, 5%, 89%);
+  --color-sidebar-border: hsl(0, 0%, 0%);
+  --color-sidebar-ring: hsl(182, 100%, 47%);
 
   --font-headline-lg: "Lexend", sans-serif;
   --font-label-mono: "Inter", sans-serif;
@@ -56,6 +81,7 @@
   --font-label-bold: "Inter", sans-serif;
   --font-body-lg: "Inter", sans-serif;
   --font-headline-lg-mobile: "Lexend", sans-serif;
+  --font-sans: "Inter", sans-serif;
 
   --text-headline-lg: 32px;
   --text-headline-lg--line-height: 38px;
@@ -90,16 +116,24 @@
   --spacing-stack-sm: 12px;
   --spacing-stack-lg: 48px;
 
-  --radius-DEFAULT: 0.25rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+  --radius-DEFAULT: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   --radius-full: 9999px;
 }
 
-body {
-  background-color: #131315;
-  color: #e5e1e4;
-  overflow-x: hidden;
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    overflow-x: hidden;
+    font-family: var(--font-body-md);
+    font-size: var(--text-body-md);
+    font-weight: var(--text-body-md--font-weight);
+  }
 }
 
 .material-symbols-outlined {

@@ -6,6 +6,12 @@ import MainNavbar from "@/components/navbar";
 import MobileNavbar from "@/components/MobileNavbar";
 import { useCareerStore } from "@/store/useCareerStore";
 import { supabase } from "@/lib/supabase";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, ArrowLeft, Plus, X, Info, Check } from "lucide-react";
 
 const MINAT_OPTIONS = [
   {
@@ -123,23 +129,18 @@ export default function DiagnosisKarir() {
       <MainNavbar />
       <main className="flex-grow flex items-center justify-center pt-24 pb-12 px-margin-mobile z-10 animate-fade-in">
         <div className="w-full max-3xl flex flex-col gap-stack-md">
-          <div className="w-full bg-surface-container-highest border-2 border-black h-4 overflow-hidden shadow-[2px_2px_0px_0px_#000000]">
-            <div
-              className="h-full bg-primary-container progress-neon transition-all duration-500 ease-out"
-              style={{ width: `${(step / 3) * 100}%` }}
-            />
-          </div>
-          <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6 md:p-10 flex flex-col gap-stack-md">
+          <Progress value={(step / 3) * 100} className="h-4 border-2 border-border shadow-[2px_2px_0px_0px_#000] rounded-none [&>*]:bg-primary [&>*]:shadow-[0_0_15px_rgba(0,240,255,0.5)]" />
+          <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 md:p-10 flex flex-col gap-stack-md rounded-none">
             {step === 1 && (
               <>
                 <div className="flex flex-col gap-2">
-                  <span className="text-primary-fixed-dim font-label-bold uppercase tracking-widest text-xs">
+                  <Badge variant="outline" className="text-xs uppercase tracking-widest w-fit border-foreground/20 text-muted-foreground">
                     Langkah 1 dari 3
-                  </span>
-                  <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface leading-tight">
+                  </Badge>
+                  <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground leading-tight">
                     Apa minat utama Anda dalam teknologi?
                   </h1>
-                  <p className="text-on-surface-variant text-sm">
+                  <p className="text-muted-foreground text-sm">
                     Pilih satu atau lebih bidang yang paling menarik bagi Anda.
                   </p>
                 </div>
@@ -151,26 +152,26 @@ export default function DiagnosisKarir() {
                         key={opt.id}
                         type="button"
                         onClick={() => togglePilihan(opt.id)}
-                        className={`group flex items-start gap-4 p-4 border-2 border-black transition-all shadow-[4px_4px_0px_0px_#000000] active:translate-y-1 active:translate-x-1 duration-100 text-left ${
+                        className={`group flex items-start gap-4 p-4 border-2 border-black transition-all shadow-[4px_4px_0px_0px_#000] active:translate-y-1 active:translate-x-1 duration-100 text-left rounded-none ${
                           selected
-                            ? "option-selected bg-primary-container/20"
-                            : "bg-surface-container-low hover:bg-surface-container-high hover:-translate-y-0.5 hover:translate-x-0.5"
+                            ? "option-selected"
+                            : "bg-card hover:bg-accent hover:-translate-y-0.5 hover:translate-x-0.5"
                         }`}
                       >
                         <span
                           className={`font-headline-lg text-xl w-10 h-10 flex items-center justify-center shrink-0 border ${
                             selected
-                              ? "bg-primary-container text-black border-primary-container"
-                              : "bg-black text-primary-container border-primary-container/20"
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-black text-primary border-primary/20"
                           }`}
                         >
-                          {selected ? "✓" : opt.label[0]}
+                          {selected ? <Check className="h-5 w-5" /> : opt.label[0]}
                         </span>
                         <div className="flex flex-col text-left">
-                          <span className="font-label-bold text-on-surface">
+                          <span className="font-label-bold text-foreground">
                             {opt.label}
                           </span>
-                          <span className="text-body-md text-on-surface-variant text-sm mt-1">
+                          <span className="text-body-md text-muted-foreground text-sm mt-1">
                             {opt.desc}
                           </span>
                         </div>
@@ -179,13 +180,15 @@ export default function DiagnosisKarir() {
                   })}
                 </div>
                 <div className="flex justify-end mt-6">
-                  <button
+                  <Button
                     type="button"
                     onClick={() => setStep(2)}
-                    className="px-10 py-3 bg-primary-container text-on-primary-fixed font-headline-lg text-lg border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-1 hover:translate-x-1 transition-all active:translate-y-0 active:translate-x-0"
+                    variant="accent"
+                    size="xl"
                   >
                     Selanjutnya
-                  </button>
+                    <ArrowRight className="h-5 w-5 ml-1" />
+                  </Button>
                 </div>
               </>
             )}
@@ -193,13 +196,13 @@ export default function DiagnosisKarir() {
             {step === 2 && (
               <>
                 <div className="flex flex-col gap-2">
-                  <span className="text-primary-fixed-dim font-label-bold uppercase tracking-widest text-xs">
+                  <Badge variant="outline" className="text-xs uppercase tracking-widest w-fit border-foreground/20 text-muted-foreground">
                     Langkah 2 dari 3
-                  </span>
-                  <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface leading-tight">
+                  </Badge>
+                  <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground leading-tight">
                     Ada minat lain? Tulis di sini
                   </h1>
-                  <p className="text-on-surface-variant text-sm">
+                  <p className="text-muted-foreground text-sm">
                     Jika ada bidang lain yang Anda minati tapi tidak tercantum,
                     tuliskan di bawah ini (opsional).
                   </p>
@@ -208,23 +211,28 @@ export default function DiagnosisKarir() {
                   value={custom}
                   onChange={(e) => setCustom(e.target.value)}
                   placeholder="Contoh: Blockchain, Game Development, AR/VR, Quantum Computing..."
-                  className="w-full p-4 border-2 border-black bg-surface-container-low text-on-surface font-body-md resize-none h-32 focus:outline-none focus:border-primary-container transition-colors"
+                  className="w-full p-4 border-2 border-border bg-card text-foreground font-body-md resize-none h-32 focus:outline-none focus:border-primary transition-colors rounded-none"
                 />
                 <div className="flex justify-between mt-6">
-                  <button
+                  <Button
                     type="button"
                     onClick={() => setStep(1)}
-                    className="px-8 py-3 font-label-bold text-on-surface-variant hover:text-primary transition-colors border-2 border-transparent"
+                    variant="ghost"
+                    size="lg"
+                    className="text-muted-foreground"
                   >
+                    <ArrowLeft className="h-5 w-5 mr-1" />
                     Kembali
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
                     onClick={() => setStep(3)}
-                    className="px-10 py-3 bg-primary-container text-on-primary-fixed font-headline-lg text-lg border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-1 hover:translate-x-1 transition-all active:translate-y-0 active:translate-x-0"
+                    variant="accent"
+                    size="xl"
                   >
                     Selanjutnya
-                  </button>
+                    <ArrowRight className="h-5 w-5 ml-1" />
+                  </Button>
                 </div>
               </>
             )}
@@ -232,19 +240,19 @@ export default function DiagnosisKarir() {
             {step === 3 && (
               <>
                 <div className="flex flex-col gap-2">
-                  <span className="text-primary-fixed-dim font-label-bold uppercase tracking-widest text-xs">
+                  <Badge variant="outline" className="text-xs uppercase tracking-widest w-fit border-foreground/20 text-muted-foreground">
                     Langkah 3 dari 3
-                  </span>
-                  <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface leading-tight">
+                  </Badge>
+                  <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground leading-tight">
                     Skill yang sudah Anda miliki
                   </h1>
-                  <p className="text-on-surface-variant text-sm">
+                  <p className="text-muted-foreground text-sm">
                     Tambahkan skill teknologi yang sudah Anda kuasai. Tekan Enter
                     untuk menambahkan.
                   </p>
                 </div>
                 <div className="flex gap-3">
-                  <input
+                  <Input
                     value={skillInput}
                     onChange={(e) => setSkillInput(e.target.value)}
                     onKeyDown={(e) => {
@@ -254,77 +262,79 @@ export default function DiagnosisKarir() {
                       }
                     }}
                     placeholder="Contoh: JavaScript, Figma, Python..."
-                    className="flex-1 p-4 border-2 border-black bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:border-primary-container transition-colors"
+                    className="flex-1 h-12 border-2 border-border bg-card text-foreground focus:border-primary rounded-none"
                   />
-                  <button
+                  <Button
                     type="button"
                     onClick={addSkill}
-                    className="px-6 py-3 bg-secondary-container text-on-secondary-container font-label-bold border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:-translate-y-0.5 hover:translate-x-0.5 transition-all"
+                    variant="secondary"
+                    className="h-12 border-2 border-black shadow-[2px_2px_0px_0px_#000] rounded-none"
                   >
+                    <Plus className="h-5 w-5 mr-1" />
                     Tambah
-                  </button>
+                  </Button>
                 </div>
                 {skillList.length > 0 && (
                   <div className="flex flex-wrap gap-3 mt-2">
                     {skillList.map((skill) => (
-                      <div
+                      <Badge
                         key={skill}
-                        className="flex items-center gap-2 px-4 py-2 bg-surface-container-highest border-2 border-black shadow-[2px_2px_0px_0px_#000000]"
+                        variant="secondary"
+                        className="flex items-center gap-2 px-4 py-2 text-sm border-2 border-black shadow-[2px_2px_0px_0px_#000] rounded-none text-secondary-foreground"
                       >
-                        <span className="font-label-bold text-sm">{skill}</span>
+                        {skill}
                         <button
                           type="button"
                           onClick={() => removeSkill(skill)}
-                          className="text-error hover:text-error/80 transition-colors"
+                          className="text-destructive hover:text-destructive/80 transition-colors ml-1"
                         >
-                          ✕
+                          <X className="h-3 w-3" />
                         </button>
-                      </div>
+                      </Badge>
                     ))}
                   </div>
                 )}
                 {error && (
-                  <div className="p-4 bg-error/10 border-2 border-error text-error font-body-md">
+                  <div className="p-4 bg-destructive/10 border-2 border-destructive text-destructive font-body-md text-sm">
                     {error}
                   </div>
                 )}
                 <div className="flex justify-between mt-6">
-                  <button
+                  <Button
                     type="button"
                     onClick={() => setStep(2)}
-                    className="px-8 py-3 font-label-bold text-on-surface-variant hover:text-primary transition-colors border-2 border-transparent"
+                    variant="ghost"
+                    size="lg"
+                    className="text-muted-foreground"
                   >
+                    <ArrowLeft className="h-5 w-5 mr-1" />
                     Kembali
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="px-10 py-3 bg-primary-container text-on-primary-fixed font-headline-lg text-lg border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-1 hover:translate-x-1 transition-all active:translate-y-0 active:translate-x-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    variant="accent"
+                    size="xl"
                   >
                     {loading ? "Memproses..." : "Mulai Assessment"}
-                  </button>
+                  </Button>
                 </div>
               </>
             )}
-          </div>
-          <div className="flex items-center gap-3 bg-surface-container-lowest/50 p-4 border border-outline-variant/30 rounded-lg">
-            <span
-              className="material-symbols-outlined text-primary-fixed-dim"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              info
-            </span>
-            <p className="text-body-md text-on-surface-variant text-sm italic">
+          </Card>
+          <div className="flex items-center gap-3 bg-card/50 p-4 border border-border/30 rounded-lg">
+            <Info className="h-5 w-5 text-muted-foreground shrink-0" />
+            <p className="text-body-md text-muted-foreground text-sm italic">
               Jawaban Anda membantu Auralis AI memetakan jalur karier teknis
               yang paling relevan dengan potensi Anda.
             </p>
           </div>
         </div>
       </main>
-      
-      <div className="fixed top-[10%] right-[5%] w-96 h-96 bg-secondary-container/20 rounded-full blur-[120px] -z-10 animate-pulse" />
-      <div className="fixed bottom-[15%] left-[5%] w-80 h-80 bg-primary-fixed-dim/10 rounded-full blur-[100px] -z-10" />
+
+      <div className="fixed top-[10%] right-[5%] w-96 h-96 bg-secondary/20 rounded-full blur-[120px] -z-10 animate-pulse" />
+      <div className="fixed bottom-[15%] left-[5%] w-80 h-80 bg-primary/10 rounded-full blur-[100px] -z-10" />
       <MobileNavbar />
     </div>
   );

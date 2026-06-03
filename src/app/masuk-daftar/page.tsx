@@ -4,6 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import MainNavbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Lock, LogIn, UserPlus } from "lucide-react";
 
 export default function MasukDaftar() {
   const router = useRouter();
@@ -50,12 +55,12 @@ export default function MasukDaftar() {
       <MainNavbar />
       <main className="flex-grow flex items-center justify-center pt-24 pb-12 px-margin-mobile z-10">
         <div className="w-full max-w-md">
-          <div className="glass-card border-2 border-black shadow-[8px_8px_0px_0px_#000000] p-8 md:p-10">
+          <Card className="glass-card border-2 border-black shadow-[8px_8px_0px_0px_#000] p-8 md:p-10 rounded-none">
             <div className="text-center mb-8">
-              <h1 className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-primary mb-2">
+              <h1 className="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-foreground mb-2">
                 {mode === "login" ? "Masuk" : "Daftar"}
               </h1>
-              <p className="text-on-surface-variant text-sm">
+              <p className="text-muted-foreground text-sm">
                 {mode === "login"
                   ? "Masuk ke akun Auralis Anda"
                   : "Buat akun baru untuk memulai"}
@@ -63,31 +68,33 @@ export default function MasukDaftar() {
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-              <div>
-                <label className="font-label-bold text-xs uppercase tracking-wider text-on-surface-variant mb-2 block">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-xs uppercase tracking-wider text-muted-foreground">
                   Email
-                </label>
-                <input
+                </Label>
+                <Input
+                  id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="nama@email.com"
-                  className="w-full p-4 border-2 border-black bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:border-primary-container transition-colors"
+                  className="h-12 border-2 border-border bg-card text-foreground focus:border-primary rounded-none"
                 />
               </div>
-              <div>
-                <label className="font-label-bold text-xs uppercase tracking-wider text-on-surface-variant mb-2 block">
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-xs uppercase tracking-wider text-muted-foreground">
                   Password
-                </label>
-                <input
+                </Label>
+                <Input
+                  id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
                   placeholder="Minimal 6 karakter"
-                  className="w-full p-4 border-2 border-black bg-surface-container-low text-on-surface font-body-md focus:outline-none focus:border-primary-container transition-colors"
+                  className="h-12 border-2 border-border bg-card text-foreground focus:border-primary rounded-none"
                 />
               </div>
 
@@ -95,29 +102,31 @@ export default function MasukDaftar() {
                 <div
                   className={`p-4 border-2 font-body-md text-sm ${
                     error.includes("berhasil")
-                      ? "bg-tertiary-container/20 border-tertiary-container text-tertiary-fixed"
-                      : "bg-error/10 border-error text-error"
+                      ? "bg-[hsl(90,100%,47%)]/20 border-[hsl(90,100%,47%)] text-[hsl(90,100%,11%)]"
+                      : "bg-destructive/10 border-destructive text-destructive"
                   }`}
                 >
                   {error}
                 </div>
               )}
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-primary-container text-on-primary-fixed font-headline-lg text-lg border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-1 hover:translate-x-1 transition-all active:translate-y-0 active:translate-x-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                variant="accent"
+                size="xl"
+                className="w-full h-12"
               >
                 {loading
                   ? "Memproses..."
                   : mode === "login"
-                  ? "Masuk"
-                  : "Daftar"}
-              </button>
+                  ? <><LogIn className="h-5 w-5 mr-2" /> Masuk</>
+                  : <><UserPlus className="h-5 w-5 mr-2" /> Daftar</>}
+              </Button>
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-on-surface-variant text-sm">
+              <p className="text-muted-foreground text-sm">
                 {mode === "login" ? "Belum punya akun?" : "Sudah punya akun?"}{" "}
                 <button
                   type="button"
@@ -125,27 +134,21 @@ export default function MasukDaftar() {
                     setMode(mode === "login" ? "register" : "login");
                     setError("");
                   }}
-                  className="text-primary-container font-label-bold underline hover:text-primary-fixed-dim transition-colors"
+                  className="text-primary font-label-bold underline hover:text-primary/80 transition-colors"
                 >
                   {mode === "login" ? "Daftar" : "Masuk"}
                 </button>
               </p>
             </div>
-          </div>
-          <div className="flex items-center gap-3 bg-surface-container-lowest/50 p-4 border border-outline-variant/30 rounded-lg mt-6">
-            <span
-              className="material-symbols-outlined text-primary-fixed-dim"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              lock
-            </span>
-            <p className="text-body-md text-on-surface-variant text-sm italic">
+          </Card>
+          <div className="flex items-center gap-3 bg-card/50 p-4 border border-border/30 rounded-lg mt-6">
+            <Lock className="h-5 w-5 text-muted-foreground shrink-0" />
+            <p className="text-body-md text-muted-foreground text-sm italic">
               Data Anda aman dengan enkripsi end-to-end Auralis.
             </p>
           </div>
         </div>
       </main>
-     
     </div>
   );
 }

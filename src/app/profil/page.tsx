@@ -7,6 +7,11 @@ import { useCareerStore } from "@/store/useCareerStore";
 import MobileNavbar from "@/components/MobileNavbar";
 import type { RiwayatItem } from "@/types/career";
 import MainNavbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { User, Mail, BadgeCheck, Plus, LogOut, History, ChevronRight, BarChart3, Route } from "lucide-react";
 
 export default function Profil() {
   const router = useRouter();
@@ -58,175 +63,165 @@ export default function Profil() {
   return (
     <>
     <MainNavbar />
-      <div className="aurora-bg" />
-      <main className="pt-24 md:pt-32 pb-stack-lg flex flex-col md:flex-row gap-gutter px-margin-mobile md:px-margin-desktop min-h-screen animate-fade-in">
+      <div className="aurora-bg fixed inset-0 z-0 pointer-events-none" />
+      <main className="pt-24 md:pt-32 pb-stack-lg flex flex-col md:flex-row gap-gutter px-margin-mobile md:px-margin-desktop min-h-screen animate-fade-in relative z-10">
         <aside className="w-full md:w-80 flex flex-col gap-gutter">
-          <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6 flex flex-col items-center text-center">
+          <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 flex flex-col items-center text-center rounded-none">
             <div className="relative w-32 h-32 mb-4">
-              <div className="absolute inset-0 rounded-full border-4 border-primary-container animate-pulse shadow-[0_0_15px_rgba(0,219,233,0.6)]" />
-              <div className="w-full h-full rounded-full border-2 border-black bg-surface-container-highest flex items-center justify-center relative z-10">
-                <span className="material-symbols-outlined text-5xl text-primary-container">
-                  person
-                </span>
+              <div className="absolute inset-0 rounded-full border-4 border-primary animate-pulse shadow-[0_0_15px_rgba(0,219,233,0.6)]" />
+              <div className="w-full h-full rounded-full border-2 border-black bg-card flex items-center justify-center relative z-10">
+                <User className="h-12 w-12 text-primary" />
               </div>
             </div>
-            <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary-fixed-dim">
+            <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-foreground">
               {user?.email?.split("@")[0] || "Pengguna"}
             </h1>
-            <p className="font-label-bold text-label-bold text-on-surface-variant mb-6 uppercase tracking-widest">
+            <p className="font-label-bold text-label-bold text-muted-foreground mb-6 uppercase tracking-widest">
               {latest
                 ? `${latest.hasilDiagnosis?.karirUtama || "Belum diagnosis"}`
                 : "Belum diagnosis"}
             </p>
             <div className="w-full space-y-3 mb-6 text-left">
-              <div className="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg border border-black/20">
-                <span className="material-symbols-outlined text-primary-container">
-                  email
-                </span>
-                <span className="text-body-md font-body-md truncate">
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border/20">
+                <Mail className="h-5 w-5 text-primary shrink-0" />
+                <span className="text-body-md font-body-md truncate text-muted-foreground">
                   {user?.email || "-"}
                 </span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg border border-black/20">
-                <span className="material-symbols-outlined text-secondary">
-                  verified
-                </span>
-                <span className="text-body-md font-body-md">
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border/20">
+                <BadgeCheck className="h-5 w-5 text-secondary shrink-0" />
+                <span className="text-body-md font-body-md text-muted-foreground">
                   Status:{" "}
                   {latest ? "Terdiagnosis" : "Menunggu diagnosis"}
                 </span>
               </div>
             </div>
-            <button
+            <Button
               onClick={() => router.push("/diagnosis-karir")}
-              className="w-full py-3 bg-primary-container text-on-primary-fixed font-headline-lg-mobile border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-0.5 hover:translate-x-0.5 transition-transform active:translate-y-1 active:translate-x-1 flex items-center justify-center gap-2"
+              variant="accent"
+              className="w-full h-12"
             >
-              <span className="material-symbols-outlined text-lg">
-                add_circle
-              </span>
+              <Plus className="h-5 w-5 mr-2" />
               Diagnosis Baru
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleLogout}
-              className="w-full py-3 mt-3 bg-surface-container text-error font-label-bold border-2 border-error shadow-[4px_4px_0px_0px_#000000] hover:-translate-y-0.5 hover:translate-x-0.5 transition-transform active:translate-y-1 active:translate-x-1"
+              variant="outline"
+              className="w-full h-12 mt-3 text-destructive border-destructive"
             >
+              <LogOut className="h-5 w-5 mr-2" />
               Logout
-            </button>
-          </div>
+            </Button>
+          </Card>
         </aside>
         <section className="flex-1 flex flex-col gap-gutter">
           {latest && latest.hasilDiagnosis && (
-            <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6">
-              <h2 className="font-headline-lg text-headline-lg-mobile text-primary mb-4">
+            <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 rounded-none">
+              <h2 className="font-headline-lg text-headline-lg-mobile text-foreground mb-4">
                 Hasil Diagnosis Terbaru
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <span className="font-label-bold text-xs uppercase text-on-surface-variant">
+                  <span className="font-label-bold text-xs uppercase text-muted-foreground">
                     Karir Utama
                   </span>
-                  <p className="font-headline-lg-mobile text-on-surface mt-1">
+                  <p className="font-headline-lg-mobile text-foreground mt-1">
                     {latest.hasilDiagnosis.karirUtama}
                   </p>
                 </div>
                 <div>
-                  <span className="font-label-bold text-xs uppercase text-on-surface-variant">
+                  <span className="font-label-bold text-xs uppercase text-muted-foreground">
                     Skor Kecocokan
                   </span>
-                  <p className="font-headline-lg-mobile text-primary-container mt-1">
+                  <p className="font-headline-lg-mobile text-primary mt-1">
                     {latest.hasilDiagnosis.skorKepercayaan}%
                   </p>
                 </div>
               </div>
               <div className="mt-4">
-                <span className="font-label-bold text-xs uppercase text-on-surface-variant">
+                <span className="font-label-bold text-xs uppercase text-muted-foreground">
                   Karir Alternatif
                 </span>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {latest.hasilDiagnosis.karirAlternatif.map((k) => (
-                    <span
+                    <Badge
                       key={k}
-                      className="px-3 py-1 bg-secondary-container text-on-secondary-container text-sm font-label-bold border border-black"
+                      variant="secondary"
+                      className="text-sm border-2 border-black rounded-none"
                     >
                       {k}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
               </div>
-              <div className="mt-4 p-4 bg-surface-container-low border border-black">
-                <p className="text-body-md text-on-surface-variant italic">
+              <div className="mt-4 p-4 bg-card border border-border">
+                <p className="text-body-md text-muted-foreground italic">
                   {latest.hasilDiagnosis.alasan}
                 </p>
               </div>
               {latest.roadmap && (
                 <div className="mt-6">
-                  <span className="font-label-bold text-xs uppercase text-on-surface-variant">
+                  <span className="font-label-bold text-xs uppercase text-muted-foreground">
                     Progress Roadmap
                   </span>
                   <div className="flex items-end gap-2 mt-2 mb-2">
-                    <span className="text-4xl font-headline-xl text-primary-container leading-none">
+                    <span className="text-4xl font-headline-xl text-primary leading-none">
                       {progressRoadmap}%
                     </span>
-                    <span className="text-on-surface-variant mb-1">Selesai</span>
+                    <span className="text-muted-foreground mb-1">Selesai</span>
                   </div>
-                  <div className="w-full h-4 bg-surface-container border-2 border-black relative overflow-hidden">
-                    <div
-                      className="absolute inset-0 bg-primary-container transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(0,219,233,0.4)]"
-                      style={{ width: `${progressRoadmap}%` }}
-                    />
-                  </div>
+                  <Progress value={progressRoadmap} className="h-4 border-2 border-border rounded-none [&>*]:bg-primary [&>*]:shadow-[0_0_10px_rgba(0,219,233,0.4)]" />
                 </div>
               )}
-              <button
+              <Button
                 onClick={() => {
                   store.setSessionId(latest.id);
                   store.setRoadmap(null);
                   router.push("/peta-jalan");
                 }}
-                className="mt-6 px-8 py-3 bg-secondary-container text-on-secondary-container font-label-bold border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:-translate-y-0.5 hover:translate-x-0.5 transition-all"
+                variant="secondary"
+                className="mt-6 border-2 border-black shadow-[2px_2px_0px_0px_#000] rounded-none"
               >
+                <Route className="h-4 w-4 mr-2" />
                 Lihat Roadmap Lengkap
-              </button>
-            </div>
+              </Button>
+            </Card>
           )}
 
           <div className="flex flex-col gap-4">
-            <h2 className="font-headline-lg text-headline-lg-mobile text-primary ml-2">
+            <h2 className="font-headline-lg text-headline-lg-mobile text-foreground ml-2">
               Riwayat Diagnosis
             </h2>
             {riwayat.length === 0 && !loading && (
-              <div className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-8 text-center">
-                <span className="material-symbols-outlined text-5xl text-on-surface-variant mb-4">
-                  history
-                </span>
-                <p className="text-on-surface-variant mb-4">
+              <Card className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-8 text-center rounded-none">
+                <History className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">
                   Belum ada riwayat diagnosis. Mulai assessment karir Anda
                   sekarang!
                 </p>
-                <button
+                <Button
                   onClick={() => router.push("/diagnosis-karir")}
-                  className="px-8 py-3 bg-primary-container text-on-primary-fixed font-label-bold border-2 border-black shadow-[4px_4px_0px_0px_#000000]"
+                  variant="accent"
+                  size="lg"
                 >
                   Mulai Diagnosis
-                </button>
-              </div>
+                </Button>
+              </Card>
             )}
             {riwayat.map((item) => (
-              <div
+              <Card
                 key={item.id}
-                className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000000] p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:bg-surface-container-highest transition-colors"
+                className="glass-card border-2 border-black shadow-[4px_4px_0px_0px_#000] p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:bg-accent transition-colors rounded-none"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-container text-on-primary-container flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
-                    <span className="material-symbols-outlined">
-                      analytics
-                    </span>
+                  <div className="w-12 h-12 bg-primary text-primary-foreground flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_0px_#000]">
+                    <BarChart3 className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-headline-lg-mobile text-on-surface">
+                    <h3 className="font-headline-lg-mobile text-foreground">
                       {item.hasilDiagnosis?.karirUtama || "Diagnosis"}
                     </h3>
-                    <p className="text-body-md text-on-surface-variant">
+                    <p className="text-body-md text-muted-foreground">
                       {new Date(item.dibuatPada).toLocaleDateString("id-ID", {
                         day: "numeric",
                         month: "long",
@@ -239,9 +234,9 @@ export default function Profil() {
                 </div>
                 <div className="flex items-center gap-4">
                   {item.roadmap && (
-                    <div className="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-xs font-bold border border-black rounded-full uppercase">
+                    <Badge variant="secondary" className="border-2 border-black rounded-none">
                       Roadmap Tersedia
-                    </div>
+                    </Badge>
                   )}
                   <button
                     onClick={() => {
@@ -249,14 +244,12 @@ export default function Profil() {
                       store.setRoadmap(null);
                       router.push("/peta-jalan");
                     }}
-                    className="p-2 border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:-translate-y-0.5 hover:translate-x-0.5 transition-transform active:translate-y-0.5 active:translate-x-0.5"
+                    className="p-2 border-2 border-black shadow-[2px_2px_0px_0px_#000] hover:-translate-y-0.5 hover:translate-x-0.5 transition-transform active:translate-y-0.5 active:translate-x-0.5"
                   >
-                    <span className="material-symbols-outlined">
-                      chevron_right
-                    </span>
+                    <ChevronRight className="h-5 w-5" />
                   </button>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </section>
